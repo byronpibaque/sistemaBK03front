@@ -1,0 +1,54 @@
+{
+  "name": "sistemavue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "browserify-fs": "^1.0.0",
+    "chart.js": "^2.9.3",
+    "chat.js": "^1.0.2",
+    "core-js": "^2.6.5",
+    "fs": "0.0.1-security",
+    "html2canvas": "^1.0.0-rc.5",
+    "html2pdf.js": "^0.9.2",
+    "ip": "^1.1.5",
+    "jspdf": "^2.3.1",
+    "jspdf-autotable": "^3.5.6",
+    "jwt-decode": "^2.2.0",
+    "local-ipv4-address": "0.0.2",
+    "moment": "^2.27.0",
+    "node-forge": "^0.9.1",
+    "node-x2js": "0.0.2",
+    "public-ip": "^4.0.3",
+    "sweetalert2": "^9.17.1",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.3",
+    "vue-sweetalert2": "^3.0.6",
+    "vuetify": "^1.5.5",
+    "vuex": "^3.0.1",
+    "xmlbuilder": "^15.1.1",
+    "xmlbuilder2": "^2.1.5"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.8.0",
+    "@vue/cli-service": "^3.8.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "vue-cli-plugin-vuetify": "^0.5.0",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.0.5"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
