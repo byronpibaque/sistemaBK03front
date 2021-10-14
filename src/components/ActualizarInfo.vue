@@ -31,7 +31,18 @@
           </v-flex>  
            <v-flex xs12 sm8 md8 lg8 xl8>
               <v-text-field v-model="nombreComercial" label="Nombre Comercial"></v-text-field>
-          </v-flex> 
+          </v-flex>
+           <v-flex xs12 sm12 md12 lg12 x12>
+             
+          </v-flex>  
+           <v-flex  xs12 sm2 md2 lg2 xl2 >
+           <v-autocomplete
+             v-model="codigoIva" :items="iva" label="Iva"
+          ></v-autocomplete>
+         </v-flex> 
+         <v-flex xs12 sm4 md4 lg4 xl4>
+              <v-text-field v-model="codigoBarr" label="Codigo Barras"></v-text-field>
+          </v-flex>
            <v-flex xs12 sm12 md12 lg12 x12>
              
           </v-flex> 
@@ -45,7 +56,7 @@
              v-model="codigoPresentacion" :items="presentaciones" label="Presentacion"
           ></v-autocomplete>
          </v-flex>  
-             <v-flex  xs12 sm2 md2 lg2 xl2 >
+          <v-flex  xs12 sm2 md2 lg2 xl2 >
            <v-autocomplete
              v-model="codigoLaboratorio" :items="laboratorios" label="Laboratorio"
           ></v-autocomplete>
@@ -73,9 +84,7 @@
           <v-flex xs12 sm8 md8 lg8 x8>
              
           </v-flex>      
-          <v-flex xs12 sm8 md8 lg8 x8>
-            <v-text-field v-model="codigoBarras" label="Código" @keyup.enter="buscarCodigo()"></v-text-field>
-          </v-flex>
+       
           <v-flex xs12 sm2 md2 lg2 xl2>
             <v-btn small fab dark color="teal" @click="mostrarModalArticulos()">
               <v-icon dark>list</v-icon>
@@ -183,6 +192,9 @@ import Swal from 'sweetalert2'
 export default {
   data() {
     return {
+      codigoBarr:"",
+      iva:[{text:'SI',value:1},{text:'NO',value:0}],
+      codigoIva:0,
       nombre:"",
       nombreComercial:"",
       codigoCategoria:"",
@@ -300,15 +312,21 @@ export default {
         this.pvp=this.articulos[0].pvp
         this.punit=this.articulos[0].precioUni
         this.descto=this.articulos[0].descuento
+        this.codigoIva=this.articulos[0].iva
+        this.codigoBarr=this.articulos[0].codigoBarras
         this.articulos.forEach(data => {
+         
            me.detalles.push({
             _id: data._id,
             codigoBarras:data.codigoBarras,
             producto: data.nombreComercial,
             codigoInventario:data.codigoInventario.descripcion,
-            idIn:data.codigoInventario._id
+            idIn:data.codigoInventario._id,
+           
+            
           });
         });
+        this.dialog=0
       }else{
         Swal.fire("Error","Debe hacer una busqueda","error");
       }
@@ -676,7 +694,9 @@ export default {
                   descuento:me.descto,
                   codigoCategoria:me.codigoCategoria,
                   codigoLaboratorio:me.codigoLaboratorio,
-                  codigoPresentacion:me.codigoPresentacion
+                  codigoPresentacion:me.codigoPresentacion,
+                  codigoIva:me.codigoIva,
+                  codigoBarras:me.codigoBarr
                 })
                 .then(function(response) {
                   if(response.status==200){
