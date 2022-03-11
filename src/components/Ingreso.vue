@@ -273,7 +273,7 @@
           </v-flex>
          
           <v-flex xs12 sm2 md2 lg2 xl2>
-            <v-text-field v-model="numComprobante" label="Número Comprobante"></v-text-field>
+            <v-text-field v-model="numComprobante" type="number" label="Número Comprobante"></v-text-field>
           </v-flex>
           <v-flex xs12 sm6 md6 lg6 xl6>
             <v-autocomplete :items="personas" v-model="codgioPersona" label="Proveedor"></v-autocomplete>
@@ -362,7 +362,7 @@
         </v-flex>
           <v-flex xs12 sm12 md12 lg12 xl12>
             <v-btn color="blue darken-1" flat @click.native="ocultarNuevo()">Cancelar</v-btn>
-            <v-btn color="success" v-if="verDetalle==0" @click.native="guardar()">Guardar</v-btn>
+            <v-btn color="success" v-if="verDetalle==0 && banderabtnGuardar==0" @click.native="guardar()">Guardar</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
@@ -379,6 +379,7 @@ import Swal from 'sweetalert2'
 export default {
   data() {
     return {
+      banderabtnGuardar:0,
       codigoFarmacia:"",
       farmaciaModal:0,
       finicio:"",
@@ -1048,6 +1049,7 @@ export default {
           }
         
       }
+  
       if(!this.codgioPersona){
         this.validaMensaje.push("Elija un proveedor.")
       }
@@ -1078,6 +1080,7 @@ export default {
       if (this.validar()) {
         return;
       }
+     this.banderabtnGuardar==1
       //Código para guardar
       axios
         .post(
@@ -1161,6 +1164,7 @@ export default {
     },
     close() {
       this.dialog = false;
+      this.banderabtnGuardar==0; 
     },
 
     validarF() {

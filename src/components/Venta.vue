@@ -3190,6 +3190,7 @@ export default {
           });
       }
     },
+    //TODO:REVISAR CODIGO DE PORCENTAJE DE IVA...
     detalleXmlgenerate() {
       for (let index = 0; index < this.detalles.length; index++) {
         let cant = 0;
@@ -3200,23 +3201,36 @@ export default {
         let descto = 0;
         let tarifa = 0;
         let val=0
+        let baseImponible1=0
+        let piv =0
         //verificar si es cantidad o fracciones
         if (this.detalles[index].cantidad == 0) {
           //FRACCIONES
           cant = this.detalles[index].fracciones;
           pu = this.detalles[index].precioUni;
           val = parseFloat(cant)*parseFloat(pu)
-          totalsinimpuesto = (
-            cant * pu -
-            (cant * pu * this.detalles[index].descuento) / 100
-          ).toFixed(2);
-          descto = ((cant * pu * this.detalles[index].descuento) / 100).toFixed(2
-          );
+          if(this.detalles[index].iva!=0){
+            piv = (pu-(pu*0.12)).toFixed(2)
+            let va = cant*pu
+            let dec = (va*this.detalles[index].descuento / 100).toFixed(2)
+            let iv=va*0.12
+            totalsinimpuesto = (va-dec-iv).toFixed(2)
+            descto = dec
+            baseImponible1=va-dec
+          }else{
+            piv=pu
+            let va = cant*pu
+            let dec = (va*this.detalles[index].descuento / 100).toFixed(2)
+            totalsinimpuesto = (va-dec).toFixed(2)
+            descto = dec
+            baseImponible1=va-dec
+          }
+        
         }else if(this.detalles[index].cantidad!=0 && this.detalles[index].fracciones!=0){
          
           //si hay fracciones y cantidades de cajas
           cant = (parseInt(this.detalles[index].cantidad)*parseInt(this.detalles[index].fraccionCaja))+parseInt(this.detalles[index].fracciones)
-
+          
           pu = this.detalles[index].precioUni;
           let pvp = this.detalles[index].precioVenta;
           
@@ -3224,21 +3238,48 @@ export default {
           let valorxfracciones = parseFloat(this.detalles[index].fracciones)*parseFloat(pu)
           let resultado = parseFloat(valorxcajas)+parseFloat(valorxfracciones)
           val=resultado
-          totalsinimpuesto = (parseFloat(resultado)-(parseFloat(resultado)*this.detalles[index].descuento/100)).toFixed(2)
-          descto = (parseFloat(resultado)*this.detalles[index].descuento/100).toFixed(2)
+          
+          if(this.detalles[index].iva!=0){
+               piv = (pu-(pu*0.12)).toFixed(2)
+            let va = resultado
+            let dec = (parseFloat(resultado)*this.detalles[index].descuento/100).toFixed(2)
+            let iv=va*0.12
+            totalsinimpuesto = (va-dec-iv).toFixed(2)
+            descto = dec
+            baseImponible1=va-dec
+           
+          }else{
+
+            piv=pu
+            let va = resultado
+            let dec = (parseFloat(resultado)*this.detalles[index].descuento/100).toFixed(2)
+            totalsinimpuesto = (va-dec).toFixed(2)
+            descto = dec
+            baseImponible1=va-dec
+          }
         } 
         else {
          //si es solo cantidades
-         cant = this.detalles[index].cantidad
+          cant = this.detalles[index].cantidad
           pu = this.detalles[index].precioVenta;
                val = parseFloat(cant)*parseFloat(pu)
-          totalsinimpuesto = (
-            cant * pu -
-            (cant * pu * this.detalles[index].descuento) / 100
-          ).toFixed(2);
-          descto = ((cant * pu * this.detalles[index].descuento) / 100).toFixed(
-            2
-          );
+
+            if(this.detalles[index].iva!=0){
+                 piv = (pu-(pu*0.12)).toFixed(2)
+            let va = cant*pu
+            let dec = (va*this.detalles[index].descuento / 100).toFixed(2)
+            let iv=va*0.12
+            totalsinimpuesto = (va-dec-iv).toFixed(2)
+            descto = dec
+            baseImponible1=va-dec
+          }else{
+            piv=pu
+            let va = cant*pu
+            let dec = (va*this.detalles[index].descuento / 100).toFixed(2)
+            totalsinimpuesto = (va-dec).toFixed(2)
+            descto = dec
+             baseImponible1=va-dec
+          }
         }
         //verificar si graba iva o no
         if (this.detalles[index].iva != 0) {
@@ -3258,7 +3299,7 @@ export default {
               codigoAuxiliar: this.detalles[index].codigoB,
               descripcion: this.detalles[index].producto,
               cantidad: cant,
-              precioUnitario: pu,
+              precioUnitario: piv,
               descuento: descto,
               precioTotalSinImpuesto: totalsinimpuesto,
               impuestos: {
@@ -4802,7 +4843,7 @@ export default {
                 .catch(function (error) {
                   console.log(error);
                 });
-            } else if (me.row == "con") {
+            }else if (me.row == "con") {
               if (me.chckCr) {
                 axios
                   .get("cupo/existe?codigoPersona=" + me.codgioPersona)
@@ -5049,8 +5090,7 @@ export default {
                 .catch(function (error) {
                   console.log(error);
                 });
-            }
-            else if(me.row == "tdb"){
+            }else if(me.row == "tdb"){
                 me.guardarXml(
                 //InfoTributaria
                 razonSocial, //razonSocial
