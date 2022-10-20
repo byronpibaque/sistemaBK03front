@@ -366,12 +366,7 @@
                   <td class="text-xs-center blue--text">
                     {{ props.item.producto }}
                   </td>
-                  <td class="text-xs-center green--text">
-                    <v-text-field
-                      v-model="props.item.cantidad"
-                   
-                    ></v-text-field>
-                  </td>
+             
                  
 
                   <td class="text-xs-center green--text">
@@ -382,15 +377,17 @@
                   </td>
                   <td
                     class="text-xs-center blue--text"
-                   
+                    bgcolor="#4682dd"
                   >
                     <v-text-field
+                    
                       v-model="props.item.cajas"
                       readonly
                      
                     ></v-text-field>
                   </td>
                    <td
+                   bgcolor="#4682dd"
                     class="text-xs-center blue--text"
                    
                   >
@@ -401,6 +398,7 @@
                     ></v-text-field>
                   </td>
                   <td
+                  bgcolor="#4682dd"
                     class="text-xs-center blue--text"
                    
                   >
@@ -532,9 +530,9 @@ export default {
        [{ text: "Borrar", value: "borrar", sortable: false },
          
           { text: "Producto", value: "producto", sortable: false },
-          { text: "Cantidad", value: "cantidad", sortable: false },
        
-          { text: "Fraccion/Caja", value: "fracciones", sortable: false },
+       
+          { text: "Fracciones a egresar", value: "fracciones", sortable: false },
           {
             text: "Cajas",
             value: "cajas",

@@ -1109,13 +1109,13 @@
         
           
          
-          <td>
+          <!-- <td>
             <div v-if="props.item.impuesto">{{ props.item.impuesto }}</div>
             <div v-else>
               <span class="red--text">No</span>
             </div>
           </td>
-          <td>{{props.item.total }}</td>
+          <td>{{props.item.total }}</td> -->
           
           <td>{{props.item.formapago}}</td>
           <td>{{props.item.claveAcceso}}</td>
@@ -1275,7 +1275,7 @@
                     <v-text-field v-model="props.item.precioUni" type="number"></v-text-field>
                   </td>
                   <td class="text-xs-center">
-                    <v-text-field v-model="props.item.descuento" type="number"></v-text-field>
+                    <v-text-field v-model="props.item.descuento" readonly type="number"></v-text-field>
                   </td>
                   <td>
                     <div v-if="props.item.iva!=0">
@@ -1770,8 +1770,8 @@ export default {
           sortable: false,
         },
         { text: "Fecha", value: "createdAt", sortable: true },
-        { text: "Impuesto", value: "impuesto", sortable: false },
-        { text: "Total", value: "total", sortable: false },
+        // { text: "Impuesto", value: "impuesto", sortable: false },
+        // { text: "Total", value: "total", sortable: false },
         { text: "Forma de pago", value: "formapago", sortable: false },
         { text: "CA/NA", value: "claveAcceso", sortable: false },
         { text: "Estado", value: "estado", sortable: false },

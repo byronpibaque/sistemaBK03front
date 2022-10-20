@@ -1007,6 +1007,7 @@ export default {
       this.valida = 0;
       this.validaMensaje = [];
       this.verDetalle = 0;
+      this.banderabtnGuardar=0
     },
     validar() {
       this.valida = 0;
@@ -1080,7 +1081,7 @@ export default {
       if (this.validar()) {
         return;
       }
-     this.banderabtnGuardar==1
+     this.banderabtnGuardar=1
       //Código para guardar
       axios
         .post(

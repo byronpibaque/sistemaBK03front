@@ -401,7 +401,7 @@
                     ></v-text-field>
                   </v-flex>
 
-                  <v-flex xs12 sm3 md3  v-if="banderaexiste!=true">
+                  <v-flex xs12 sm3 md3  v-if="banderaexiste!=true && $store.state.usuario.codigoFarmacia==undefined ">
                     <v-text-field
                       v-model="descuento"
                       label="Descuento"

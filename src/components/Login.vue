@@ -4,7 +4,7 @@
       <div id="card">
         <v-flex xs8 sm8 md6 lg5 xl5>
           <v-card>
-            <v-toolbar dark color="blue darken-3">
+            <v-toolbar dark color="#cd3162">
               <v-toolbar-title> INICIO DE SESIÓN </v-toolbar-title>
             </v-toolbar>
             <v-card-text>
@@ -34,7 +34,7 @@
             </v-card-text>
             <v-card-actions class="px-3 pb-3">
               <v-flex text-xs-right>
-                <v-btn @click="ingresar" color="primary">Ingresar</v-btn>
+                <v-btn @click="ingresar" color="success">Ingresar</v-btn>
               </v-flex>
             </v-card-actions>
           </v-card>

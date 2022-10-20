@@ -2,7 +2,7 @@
 
  <v-container grid-list-m>
       <template v-if="$store.state.usuario.codigoFarmacia==undefined">
-      <v-container grid-list-m>
+      <!-- <v-container grid-list-m>
          <span class="blue--text " style="font-size: 20px " >Filtrar por Farmacia</span>
         <v-layout wrap>
 
@@ -10,17 +10,17 @@
             <v-autocomplete :items="farmacias" v-model="codigoFarmacia" v-on:change="listarMasVende(),listarProducto(),listar(),listarF()"  label="Seleccione una farmacia"></v-autocomplete>
           </v-flex>
         </v-layout>
-        </v-container>
+        </v-container> -->
       </template>
    <v-layout wrap>
-      <v-flex xs12 sm12 md12>
+      <!-- <v-flex xs12 sm12 md12>
         <div class="ct-chart">
              <span class="blue--text " style="font-size: 18px" >TOTAL DE VENTAS POR MES</span>
           <canvas id="myChart">
 
           </canvas>
         </div>
-      </v-flex>
+      </v-flex> -->
        <v-flex xs12 sm12 md12>
 
         <div class="ct-chart">
