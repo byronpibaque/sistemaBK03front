@@ -6,7 +6,7 @@ import store from './store'
 import axios from 'axios'
 
 Vue.config.productionTip = false
-axios.defaults.baseURL='http://localhost:20000/api/'; //RUTA DE ACCESO AL BACKEND
+axios.defaults.baseURL='https://sistemabk03.herokuapp.com/api/'; //RUTA DE ACCESO AL BACKEND
 new Vue({
   router,
   store,

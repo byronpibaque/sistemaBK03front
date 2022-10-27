@@ -20,6 +20,8 @@
           hide-details
         ></v-text-field>
         <v-spacer></v-spacer>
+
+        <!-- dialogo para filtrar registros de cta x cobrar -->
         <v-dialog v-model="ExportarModal" max-width="700px">
           <v-card>
             <v-card-title>
@@ -153,6 +155,8 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <!-- fin del dialogo -->
+
         <v-dialog v-model="dialog" max-width="500px">
           <v-card>
             <v-card-title>
@@ -411,9 +415,18 @@ export default {
       let header = { Token: this.$store.state.token };
       let codigoFarmacia = this.$store.state.usuario.codigoFarmacia;
       let configuracion = { headers: header };
-      
-        axios
-          .delete("ctascobrar/remove?_id=" + data._id, configuracion)
+
+      Swal.fire({
+        title: 'Seguro deseas eliminar esta cuenta por cobrar?',
+        text: "Una vez eliminado no podra recuperarse!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, eliminar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.delete("ctascobrar/remove?_id=" + data._id, configuracion)
           .then(function(response) {
             if (response.status === 200) {
               Swal.fire("Notificación", "Procedimiento exitoso!", "success");
@@ -426,7 +439,9 @@ export default {
           })
           .catch(function(error) {
             console.log(error);
-          });
+          });          
+        }
+      })      
       
     },
     formatearFecha(value) {
