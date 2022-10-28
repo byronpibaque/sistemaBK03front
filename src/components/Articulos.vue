@@ -10,7 +10,7 @@
         <v-divider class="mx-2" inset vertical></v-divider>
         <v-btn @click="abrirInventario">
           INV
-          <v-icon>local_printshop</v-icon>
+        <v-icon>local_printshop</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
 
@@ -1605,21 +1605,32 @@ export default {
       let codigoFarmacia = this.$store.state.usuario.codigoFarmacia;
       let configuracion = { headers: header };
 
-        axios
-          .delete("productos/remove?_id=" + data._id, configuracion)
-          .then(function(response) {
-            if (response.status === 200) {
-              Swal.fire("Notificación", "Procedimiento exitoso!", "success");
-              me.listar();
-              me.listarduplicados()
-
-            } else {
-              Swal.fire("Notificación", "Hubo algun problema!", "error");
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+      Swal.fire({
+        title: 'Estas seguro de eliminar este articulo?',
+        text: "Una vez eliminado no podra recuperarse!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.delete("productos/remove?_id=" + data._id, configuracion)
+            .then(function(response) {
+              if (response.status === 200) {
+                Swal.fire("Notificación", "Procedimiento exitoso!", "success");
+                me.listar();
+                me.listarduplicados()
+  
+              } else {
+                Swal.fire("Notificación", "Hubo algun problema!", "error");
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      })
 
     },
     calcularFraccionesTotales() {
