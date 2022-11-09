@@ -313,15 +313,16 @@ export default {
         this.descto=this.articulos[0].descuento
         this.codigoIva=this.articulos[0].iva
         this.codigoBarr=this.articulos[0].codigoBarras
-        this.articulos.forEach(data => {
-         
+        //Vaciar elementos anteriores
+        me.detalles = [];
+
+        this.articulos.forEach(data => {        
            me.detalles.push({
             _id: data._id,
             codigoBarras:data.codigoBarras,
             producto: data.nombreComercial,
             codigoInventario:data.codigoInventario.descripcion,
-            idIn:data.codigoInventario._id,
-           
+            idIn:data.codigoInventario._id,        
             
           });
         });
