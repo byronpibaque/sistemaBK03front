@@ -361,14 +361,10 @@
                       @click="eliminarDetalle(detalles, props.item)"
                       >delete</v-icon
                     >
-                  </td>
-                 
+                  </td>                 
                   <td class="text-xs-center blue--text">
                     {{ props.item.producto }}
                   </td>
-             
-                 
-
                   <td class="text-xs-center green--text">
                     <v-text-field
                       v-model="props.item.fracciones"
@@ -1330,12 +1326,12 @@ export default {
           configuracion
         )
         .then(function (response) {
+          this.loading = false;
           Swal.fire(
             "Notificación",
             "Por favor este pendiente del correo,\npronto administrativo aceptara su pedido de egreso.",
             "success"
           );
-          this.loading = false;
           me.limpiar();
           me.close();
           me.listar();

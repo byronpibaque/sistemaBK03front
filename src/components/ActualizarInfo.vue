@@ -125,7 +125,9 @@
       
         <v-flex xs12 sm12 md12 lg12 xl12>
             <v-btn color="success" v-if="verDetalle==0" @click.native="guardar()">Actualizar</v-btn>
-          </v-flex>
+        </v-flex>
+
+        <!-- Ventana modal para actualizar buscar articulos -->
         <v-dialog v-model="dialog" max-width="1000px">
           <v-card>
             <v-card-title>
@@ -179,6 +181,8 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <!-- Fin de ventana modal-->
+
     </v-flex>
   </v-layout>
 </template>
@@ -277,12 +281,7 @@ export default {
   
     
     };
-  },
-  computed: {
-   
-   
-  },
-  
+  },  
   watch: {
     dialog(val) {
       val || this.close();
@@ -386,8 +385,7 @@ export default {
       if (value) {
         return moment(String(value)).format('MM/DD/YYYY hh:mm')
       }
-      },
-  
+    },  
     buscarCodigo() {
       let me = this;
       me.errorArticulo = null;
@@ -431,10 +429,6 @@ export default {
           });
       
       }
-
-
-
-
     },
     agregarDetalle(data) {
       
@@ -482,8 +476,7 @@ export default {
         });
     },
     listarArticulosnombres() {
-
-       let me = this;
+      let me = this;
       const codigo = "";
       let text = this.texto;
       let header1 = { Token: this.$store.state.token };
@@ -496,32 +489,25 @@ export default {
           if(!isNaN(text)){
             me.articulos=[]
             //agregar busqueda por codigo de barras...
-            axios
-                  .get(
-                    "productos/busquedaAvanzadaT?codigoBarras="+text,
-                    configuracion
-                  )
-                  .then(function(response) {
-                    if(response.data.length>0){
-                      me.articulos = response.data;
-                    }else{
+            axios.get("productos/busquedaAvanzadaT?codigoBarras="+ text , configuracion)
+              .then(function(response) {
+                if(response.data.length>0){
+                  const resultado = response.data.filter(pr => pr.codigoInventario != null)
+                  me.articulos = resultado;
+                }else{
                   Swal.fire("Informacion","No hay resultados","info")
-                }
-                      
-
-                  })
-                    .catch(function(error) {
-                      console.log(error);
-                    });
+                }})
+                .catch(function(error) {
+                  console.log(error);
+                });
           }else{
             me.articulos=[]
-          axios
-            .get("productos/listtotal?valor=" + this.texto, configuracion)
+            axios.get("productos/listtotal?valor=" + this.texto, configuracion)
             .then(function (response) {
-               if(response.data.length>0){
-                      me.articulos = response.data;
-
-                    }else{
+                if(response.data.length>0){
+                  const resultado = response.data.filter(pr => pr.codigoInventario != null)
+                  me.articulos = resultado;
+                }else{
                   Swal.fire("Informacion","No hay resultados","info")
                 }
             })
@@ -601,13 +587,7 @@ export default {
               console.log(error);
             });
           }
-           
-        
       }
-
-
-     
-      
     },
     mostrarModalArticulos() {
       this.dialog = 1;
@@ -769,9 +749,7 @@ export default {
       this.dialog = false;
       this.texto=""
       this.articulos=[]
-    },
-
-   
+    }
   }
 };
 </script>

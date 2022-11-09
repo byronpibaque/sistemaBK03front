@@ -1607,7 +1607,7 @@ export default {
 
       Swal.fire({
         title: 'Estas seguro de eliminar este articulo?',
-        text: "Una vez eliminado no podra recuperarse!",
+        text: "Una vez eliminado no podra recuperarse...!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
