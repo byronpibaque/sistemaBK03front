@@ -276,10 +276,7 @@ export default {
       adAccion: 0,
       adNombre: "",
       adId: "",
-      codigoBarras: "",
-     
-  
-    
+      codigoBarras: ""
     };
   },  
   watch: {
@@ -322,8 +319,7 @@ export default {
             codigoBarras:data.codigoBarras,
             producto: data.nombreComercial,
             codigoInventario:data.codigoInventario.descripcion,
-            idIn:data.codigoInventario._id,        
-            
+            idIn:data.codigoInventario._id             
           });
         });
         this.dialog=0
@@ -493,7 +489,7 @@ export default {
             axios.get("productos/busquedaAvanzadaT?codigoBarras="+ text , configuracion)
               .then(function(response) {
                 if(response.data.length>0){
-                  const resultado = response.data.filter(pr => pr.codigoInventario != null)
+                  const resultado = response.data.filter(pr => pr.codigoInventario.estado == 1)
                   me.articulos = resultado;
                 }else{
                   Swal.fire("Informacion","No hay resultados","info")
@@ -506,7 +502,7 @@ export default {
             axios.get("productos/listtotal?valor=" + this.texto, configuracion)
             .then(function (response) {
                 if(response.data.length>0){
-                  const resultado = response.data.filter(pr => pr.codigoInventario != null)
+                  const resultado = response.data.filter(pr => pr.codigoInventario.estado == 1)
                   me.articulos = resultado;
                 }else{
                   Swal.fire("Informacion","No hay resultados","info")
