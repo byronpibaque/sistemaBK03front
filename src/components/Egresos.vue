@@ -361,14 +361,10 @@
                       @click="eliminarDetalle(detalles, props.item)"
                       >delete</v-icon
                     >
-                  </td>
-                 
+                  </td>                 
                   <td class="text-xs-center blue--text">
                     {{ props.item.producto }}
                   </td>
-             
-                 
-
                   <td class="text-xs-center green--text">
                     <v-text-field
                       v-model="props.item.fracciones"
@@ -476,8 +472,9 @@
             <v-btn
               color="success"
               v-if="verDetalle == 0"
+              :disabled="loading"
               @click.native="guardar()"
-              >Guardar</v-btn
+              >{{ loading ? 'Cargando...' : 'Guardar' }}</v-btn
             >
           </v-flex>
         </v-layout>
@@ -494,6 +491,7 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
+      loading: false,
       inventarioV:[],
       codigoInventarioV:"",
       finicio: "",
@@ -1308,7 +1306,10 @@ export default {
       if (this.validar()) {
         return;
       }
-      //Código para guardar
+      // //Código para guardar
+      
+      this.loading = true;
+
       axios
         .post(
           "egreso/add",
@@ -1325,12 +1326,12 @@ export default {
           configuracion
         )
         .then(function (response) {
+          this.loading = false;
           Swal.fire(
             "Notificación",
             "Por favor este pendiente del correo,\npronto administrativo aceptara su pedido de egreso.",
             "success"
           );
-
           me.limpiar();
           me.close();
           me.listar();
@@ -1339,6 +1340,7 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+          this.loading = false;
         });
     },
     activarDesactivarMostrar(accion, item) {
@@ -1536,3 +1538,42 @@ export default {
   },
 };
 </script>
+
+<style>
+.custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

@@ -362,7 +362,11 @@
         </v-flex>
           <v-flex xs12 sm12 md12 lg12 xl12>
             <v-btn color="blue darken-1" flat @click.native="ocultarNuevo()">Cancelar</v-btn>
-            <v-btn color="success" v-if="verDetalle==0 && banderabtnGuardar==0" @click.native="guardar()">Guardar</v-btn>
+
+            <v-btn color="success" v-if="verDetalle==0 && banderabtnGuardar==0" 
+              @click.native="guardar()" :disabled="loading">
+              {{ loading ? 'Cargando...' : 'Guardar' }}
+            </v-btn>
           </v-flex>
         </v-layout>
       </v-container>
@@ -379,6 +383,7 @@ import Swal from 'sweetalert2'
 export default {
   data() {
     return {
+      loading: false,
       banderabtnGuardar:0,
       codigoFarmacia:"",
       farmaciaModal:0,
@@ -1083,6 +1088,9 @@ export default {
       }
      this.banderabtnGuardar=1
       //Código para guardar
+
+      this.loading = true;
+
       axios
         .post(
           "ingresos/add",
@@ -1106,11 +1114,13 @@ export default {
           }else{
             Swal.fire("Ops!","Hubo problemas al intentar guardar el ingreso","err")
           }
+          this.loading = false;
           me.limpiar();
           me.close();
           me.listar();
         })
         .catch(function(error) {
+          this.loading = false;
           console.log(error);
         });
     },
@@ -1290,8 +1300,7 @@ export default {
         }
       });
       doc.save("ReporteIngresos.pdf");
-    },
-   
+    },   
   }
 };
 </script>

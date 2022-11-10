@@ -16,10 +16,14 @@
           v-if="$store.state.usuario.codigoFarmacia == undefined"
         ></v-checkbox>
           </v-flex>  
-           <v-flex  xs12 sm8 md6 lg6 xl6  v-if="checkbox==false && $store.state.usuario.codigoFarmacia == undefined">
-           <v-autocomplete
-             v-model="codigoFarmacia" :items="farmacias" label="Elije a que farmacia aplicar el descuento:"
-          ></v-autocomplete>
+
+           <v-flex  xs12 sm8 md6 lg6 xl6  
+            v-if="checkbox==false && $store.state.usuario.codigoFarmacia == undefined">
+           <v-autocomplete v-model="codigoFarmacia" 
+            :items="farmacias" 
+            label="Elije a que farmacia aplicar el descuento:"
+            ></v-autocomplete>
+
          </v-flex>       
          <v-flex  xs12 sm8 md6 lg6 xl6 >
            <v-autocomplete
