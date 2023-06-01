@@ -580,7 +580,7 @@ export default {
 </script>
 <style>
 #tool{
- background-color: #cd3162;
+ background-color: #ea680b;
  /* background-image: url("./assets/19399009.jpg"); */
  /* background-repeat: no-repeat;
     background-size: cover; */
