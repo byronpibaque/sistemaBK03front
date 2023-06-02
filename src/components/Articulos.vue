@@ -223,7 +223,7 @@
                 <v-layout wrap>
                   <v-flex xs12 sm6 md6>
                     <v-text-field
-                      v-model="codigoBarras"
+                      v-model.trim="codigoBarras"
                       label="Codigo de Barra"
                       v-on:keyup.enter="verificarCodigoBarra()"
                     ></v-text-field>
@@ -343,7 +343,10 @@
            
                   <v-flex xs12 sm2 md2  v-if="banderaexiste!=true && $store.state.usuario.codigoFarmacia==undefined  && editedIndex > -1 ">
                     <v-text-field
+                      type="number"
+                      min="1" pattern="^[0-9]+"
                       v-model="fraccionCaja"
+                      v-on:change="verifiIva(),calcularPrecioUnitario()"
                       @change="calcularCajasFracciones()"
                       label="F. x Caja"
                     ></v-text-field>
@@ -351,7 +354,10 @@
                   
                   <v-flex xs12 sm2 md2  v-if="banderaexiste!=true && editedIndex == -1 ">
                     <v-text-field
+                      type="number"
+                      min="1" pattern="^[0-9]+"
                       v-model="fraccionCaja"
+                      v-on:change="verifiIva(),calcularPrecioUnitario()"
                       @change="calcularCajasFracciones()"
                       label="F. x Caja"
                     ></v-text-field>
@@ -359,6 +365,8 @@
                   
                     <v-flex xs12 sm2 md2  v-if="banderaexiste!=true && $store.state.usuario.codigoFarmacia==undefined  && editedIndex > -1 ">
                     <v-text-field
+                      type="number"
+                      min="1" pattern="^[0-9]+"
                       v-model="fraccionesTotales"
                       @change="calcularCajasFracciones()"
                       label="Total Fracciones"
@@ -367,6 +375,8 @@
               
                    <v-flex xs12 sm2 md2  v-if="banderaexiste!=true && $store.state.usuario.codigoFarmacia==undefined  && editedIndex == -1 ">
                     <v-text-field
+                      type="number"
+                      min="1" pattern="^[0-9]+"
                       v-model="fraccionesTotales"
                       @change="calcularCajasFracciones()"
                       label="Total Fracciones"
@@ -382,12 +392,16 @@
 
                   <v-flex xs12 sm2 md2  v-if="banderaexiste!=true">
                     <v-text-field
+                      type="number"
+                      min="1" pattern="^[0-9]+"
                       v-model="costoNeto"
                       label="PVM"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm2 md2  v-if="banderaexiste!=true">
                     <v-text-field
+                      type="number"
+                      min="1" pattern="^[0-9]+"
                       v-model="pvp"
                       v-on:change="verifiIva(),calcularPrecioUnitario()"
                       label="PVP"
@@ -396,6 +410,7 @@
 
                   <v-flex xs12 sm2 md2  v-if="banderaexiste!=true">
                     <v-text-field
+                      readonly
                       v-model="precioUni"
                       label="P. Unit."
                     ></v-text-field>
@@ -403,6 +418,8 @@
 
                   <v-flex xs12 sm3 md3  v-if="banderaexiste!=true && $store.state.usuario.codigoFarmacia==undefined ">
                     <v-text-field
+                      type="number"
+                      min="1" pattern="^[0-9]+"
                       v-model="descuento"
                       label="Descuento"
                     ></v-text-field>
@@ -422,7 +439,11 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" flat @click="close">Cancelar</v-btn>
-              <v-btn color="blue darken-1" flat @click="guardar">Guardar</v-btn>
+              <v-btn color="blue darken-1" flat 
+                :disabled="loading"
+                @click="guardar">
+                Guardar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -560,7 +581,7 @@
        <v-flex xs6 sm8 md6 ld6 xl8>
            <v-text-field
           class="text-xs-center"
-          v-model="busquedaAavanzada"
+          v-model.trim="busquedaAavanzada"
           append-icon="search"
           label="Buscar: (Codigo de barras/Nombre)"
           single-line
@@ -674,6 +695,7 @@
 
 <script>
 import axios from "axios";
+// import alertifyjs from "alertifyjs";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import Swal from "sweetalert2";
@@ -681,6 +703,7 @@ import moment from "moment";
 export default {
   data() {
     return {
+      loading: false,
       chckTotalizado:false,
       codigoFEx:"",
       exportarExcel:0,
@@ -856,20 +879,18 @@ export default {
   },
   created() {
     //this.listarF();
-
     this.selectrInventario();
     this.selectCategoria();
     this.selectLaboratorio();
     this.selectPresentacion();
     this.ObtenerFa();
     this.selectfarmacia();
-
   },
   methods: {
     abrirModalExportar(){
       this.exportarExcel=1;
     },
-   verificarFraccionado(){
+    verificarFraccionado(){
      if(this.chckfraccionado){
        if(this.cajitas!=0){
         this.banderaparafracciones=true
@@ -896,8 +917,8 @@ export default {
 
      }
 
-   },
-   calcularCajasFr(){
+    },
+    calcularCajasFr(){
 
       if(this.chckfraccionado==true){
          this.Cajas= parseInt(this.cajitas)*parseInt(this.fraccionCaja)
@@ -930,46 +951,29 @@ export default {
       let codigoFarmacia = this.$store.state.usuario.codigoFarmacia;
       if(this.checkbox){
         if (!isNaN(valor)) {
-              axios
-                    .get(
-                      "productos/busquedaAvanzadaT?codigoBarras="+valor,
-                      configuracion
-                    )
-                    .then(function(response) {
-
-                      if(response.status==200){
-                          me.articulos = response.data;
-                      }else if(response.status==204){
-                        Swal.fire("Error","No hay resultados!","error")
-                      }
-
-
-                    })
-                      .catch(function(error) {
-                        console.log(error);
-                      });
-                 
-              
+          axios.get("productos/busquedaAvanzadaT?codigoBarras=" + valor, configuracion)
+            .then(function(response) {
+              if(response.status==200){
+                const resultado = response.data.filter(pr => pr.codigoInventario.estado == 1)
+                me.articulos = resultado;
+              }else if(response.status==204){
+                Swal.fire("Error","No hay resultados!","error")
+              }
+            }).catch(function(error) {
+                console.log(error);
+            });
         }else{
-           axios
-                    .get(
-                      "productos/busquedaAvanzadaL?nombreComercial="+valor,
-                      configuracion
-                    )
-                    .then(function(response) {
-
-                      if(response.status==200){
-                          me.articulos = response.data;
-                      }else if(response.status==204){
-                        Swal.fire("Error","No hay resultados!","error")
-                      }
-
-
-                    })
-                      .catch(function(error) {
-                        console.log(error);
-                      });
-                 
+          axios.get("productos/busquedaAvanzadaL?nombreComercial="+ valor , configuracion)
+            .then(function(response) {
+              if(response.status==200){
+                const resultado = response.data.filter(pr => pr.codigoInventario.estado == 1)
+                me.articulos = resultado;
+              }else if(response.status==204){
+                Swal.fire("Error","No hay resultados!","error")
+              }
+            }).catch(function(error) {
+              console.log(error);
+            });
           }
       }else{
         if (!isNaN(valor)) {
@@ -1612,7 +1616,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Si, Eliminar'
       }).then((result) => {
         if (result.isConfirmed) {
           axios.delete("productos/remove?_id=" + data._id, configuracion)
@@ -1737,7 +1742,8 @@ export default {
         axios
           .get("inventario/list", configuracion)
           .then(function(response) {
-            ArrayT = response.data;
+            const resultado = response.data.filter(pr => pr.estado == 1)
+            ArrayT = resultado;
             ArrayT.map(function(x) {
               me.inventario.push({ text: x.descripcion, value: x._id });
             });
@@ -1947,12 +1953,14 @@ export default {
       }
       if(this.fraccionesTotales.length==0){
         this.validaMensaje.push("Fracciones totales no puede ser un campo vacío.")
-      }
-       
-        if(this.fraccionCaja.length==0){
+      }       
+      if(this.fraccionCaja.length==0){
         this.validaMensaje.push("Fraccion X caja no puede ser un campo vacío.")
       }
-         if(this.descuento.length==0){
+      if(this.fraccionCaja < 0){
+        this.validaMensaje.push("El campo F x Caja no puede ser cero o negativo")
+      }
+      if(this.descuento.length==0){
         this.validaMensaje.push("Descuento no puede ser un campo vacío.")
       }
       if(this.fraccionCaja==0){
@@ -1961,7 +1969,7 @@ export default {
       if (this.descuento>=0) {
 
       }else{
-         this.validaMensaje.push("Ingrese el descuento.");
+         this.validaMensaje.push("El valor de descuento no puede ser negativo");
       }
       if(this.iva.length==0){
         this.validaMensaje.push("Escoja iva");
@@ -1975,23 +1983,30 @@ export default {
       if (!this.pvp) {
         this.validaMensaje.push("Ingrese PVP.");
       }
+      if (parseFloat(this.pvp) < 0) {
+        this.validaMensaje.push("El valor PVP no puede ser cero o negativo.");
+      }
       if (!this.precioUni) {
         this.validaMensaje.push("Ingrese precio unitario.");
       }
       if (!this.costoNeto) {
         this.validaMensaje.push("Ingrese costo neto.");
       }
+      if ( parseFloat(this.costoNeto) < 0) {
+        this.validaMensaje.push("El campo PVM no puede ser cero o negativo");
+      }
       if (this.validaMensaje.length) {
         this.valida = 1;
       }
       return this.valida;
     },
-    guardar() {
+    async guardar() {
       let me = this;
       let horaactual = moment().format();
       if (this.validar()) {
         return;
       }
+      this.loading = true;
       if (this.editedIndex > -1) {
         //Código para editar
         axios
@@ -2015,57 +2030,69 @@ export default {
             codigoInventario: this.codigoInventario,
             codigoUsuario: me.$store.state.usuario.codigoUsuario,
             fechaModificacion:horaactual
-            
-          })
-          .then(function(response) {
+          }).then(function(response) {
+            me.loading = false;
             Swal.fire("Notificación", "Articulo editado!", "success");
             me.limpiar();
             me.close();
             me.listar();
           })
           .catch(function(error) {
+            me.loading = false;
             console.log(error);
           });
       } else {
         //Código para guardar
         if(this.chcktodoi){
-          this.inventario.forEach(element => {
-           
-            if(element.text=="BODEGA" && element.text=="Otros - Jefes"){
-
-            }else{
-              axios
-            .post("productos/add", {
-              codigoBarras: this.codigoBarras,
-              nombre: this.nombre,
-              nombreComercial: this.nombreComercial,
-              stock:0,
-              fraccionesTotales: this.fraccionesTotales,
-              fraccionCaja: this.fraccionCaja,
-              fechaCaducidad: this.fechaCaducidad,
-              costoNeto: this.costoNeto,
-              pvp: this.pvp,
-              precioUni: this.precioUni,
-              descuento: this.descuento,
-              iva: this.iva,
-              codigoCategoria: this.codigoCategoria,
-              codigoLaboratorio: this.codigoLaboratorio,
-              codigoPresentacion: this.codigoPresentacion,
-              codigoInventario: element.value,
-              codigoUsuario: me.$store.state.usuario.codigoUsuario,
-              fechaModificacion:horaactual
-            })
-            .then(function(response) {
-              Swal.fire("Notificación", "Articulo guardado!", "success");
-              me.limpiar();
-              me.close();
-              me.listar();
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
-            }
-          });
+          var messageProductoRepetidos = 'Este producto ya existe en: '
+          for (let index = 0; index <= 1; index++) {
+            if (index == 0) {
+              // Hace una nueva solicitud de red
+              this.inventario.forEach(element => { //HACE INSERCION POR CADA INVENTARIO
+                if(element.text=="BODEGA" && element.text=="Otros - Jefes"){
+    
+                }else{
+                  axios.post("productos/add", {
+                    codigoBarras: this.codigoBarras,
+                    nombre: this.nombre,
+                    nombreComercial: this.nombreComercial,
+                    stock:0,
+                    fraccionesTotales: this.fraccionesTotales,
+                    fraccionCaja: this.fraccionCaja,
+                    fechaCaducidad: this.fechaCaducidad,
+                    costoNeto: this.costoNeto,
+                    pvp: this.pvp,
+                    precioUni: this.precioUni,
+                    descuento: this.descuento,
+                    iva: this.iva,
+                    codigoCategoria: this.codigoCategoria,
+                    codigoLaboratorio: this.codigoLaboratorio,
+                    codigoPresentacion: this.codigoPresentacion,
+                    codigoInventario: element.value,
+                    codigoUsuario: me.$store.state.usuario.codigoUsuario,
+                    fechaModificacion:horaactual
+                  })
+                  .then(function(response) {
+                    me.loading = false;
+                    Swal.fire("Notificación", "Articulo guardado!", "success");
+                    me.limpiar();
+                    me.close();
+                    me.listar();
+                  })
+                  .catch(function(error) {
+                    if (error.response.status == 301) {   
+                      messageProductoRepetidos += '\n' + error.response.data.message
+                    }     
+                  });
+                }
+              });                  
+            } else {
+              setTimeout(() => {
+                me.mostrarMiniAlerta(messageProductoRepetidos);
+                me.loading = false;
+              }, 5000)
+            }                
+          }          
         }else{
           axios
             .post("productos/add", {
@@ -2093,13 +2120,35 @@ export default {
               me.limpiar();
               me.close();
               me.listar();
+              me.loading = false;
             })
             .catch(function(error) {
+              if (error.response.status == 301) {    
+                me.mostrarMiniAlerta(`Este producto ya existe en: ${error.response.data.message}`)
+              }                   
               console.log(error);
+              me.loading = false;
             });
-        }
-       
+        }       
       }
+    },
+    mostrarMiniAlerta(mensaje){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 9000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+
+      Toast.fire({
+        icon: 'warning',
+        title: mensaje
+      })
     },
     calucularFraccionamiento(fraccionesTotales,fraccionCaja){
        this.Cajas= Math.floor(parseFloat(fraccionesTotales)/parseFloat(fraccionCaja))

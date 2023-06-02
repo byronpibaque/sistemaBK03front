@@ -733,7 +733,7 @@ export default {
         if (codigoFarmacia == undefined) {
         axios
           .get(
-            "ctascobrar/listporfechasad?fechainicio=" +
+            "http://localhost:25000/api/ctascobrar/listporfechasad?fechainicio=" +
                fechaConverI.toISOString() +
               "&fechafin=" +
                fechaConverF.toISOString() +

@@ -13,7 +13,7 @@
         <v-text-field
           v-if="verNuevo == 0"
           class="text-xs-center"
-          v-model="search"
+          v-model.trim="search"
           append-icon="search"
           label="Búsqueda"
           single-line
@@ -28,6 +28,7 @@
           class="mb-2"
           >Pedir Autorizacion</v-btn
         >
+        
         <v-dialog v-model="FarmaciasModal" max-width="500px">
           <v-card>
             <v-card-title>
@@ -56,6 +57,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
         <v-dialog v-model="ExportarModal" max-width="500px">
           <v-card>
             <v-card-title>
@@ -945,8 +947,7 @@ export default {
         .then(function (response) {
           personaArray = response.data;
           personaArray.map(function (x) {
-            me.inventario.push({ text: x.descripcion, value: x._id });
-          //  me.inventarioV.push({ text: x.descripcion, value: x._id });
+            if (x.estado) me.inventario.push({ text: x.descripcion, value: x._id });
           });
         })
         .catch(function (error) {
@@ -1307,7 +1308,6 @@ export default {
         return;
       }
       // //Código para guardar
-      
       this.loading = true;
 
       axios
@@ -1319,14 +1319,14 @@ export default {
             codigoInventarioR: this.codigoInventarioV,
             descripcion: this.descripcion,
             numComprobante: this.conteo,
-            impuesto: this.calcularIva,
+            iva: this.calcularIva,
             total: this.total,
             detalles: this.detalles,
           },
           configuracion
         )
         .then(function (response) {
-          this.loading = false;
+          me.loading = false;
           Swal.fire(
             "Notificación",
             "Por favor este pendiente del correo,\npronto administrativo aceptara su pedido de egreso.",
@@ -1340,7 +1340,7 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
-          this.loading = false;
+          me.loading = false;
         });
     },
     activarDesactivarMostrar(accion, item) {
@@ -1380,13 +1380,13 @@ export default {
           console.log(error);
         });
     },
-    desactivar() {
+    desactivar(){
       let me = this;
       let header = { Token: this.$store.state.token };
       let configuracion = { headers: header };
       axios
         .put("egreso/activate", { _id: this.adId }, configuracion)
-        .then(function (response) {
+        .then(function (response){
           me.adModal = 0;
           me.adAccion = 0;
           me.adNombre = "";

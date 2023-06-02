@@ -38,6 +38,7 @@ import consultadetallesCompras from './components/ConsultaDetallesCompra'
 import reportes from './components/Reportes'
 import Cotizacion from './components/Cotizacion'
 import seguimiento from './components/seguimiento'
+import seguimientoByFechas from './components/seguimientoByRango'
 import cuc from './components/cambiarusuarioclave'
 import asignarIp from './components/asignarip.vue'
 import actualizarinf from './components/ActualizarInfo.vue'
@@ -112,6 +113,18 @@ var router = new Router({
       path: '/seguimiento',
       name: 'seguimiento',
       component: seguimiento,
+      meta:{
+        administrador:true,
+        vendedor:true,
+        lider:true,
+        supervisor:true,
+        jefe:true
+      }
+    },
+    {
+      path: '/seguimientoByfechas',
+      name: 'seguimientoByFechas',
+      component: seguimientoByFechas,
       meta:{
         administrador:true,
         vendedor:true,

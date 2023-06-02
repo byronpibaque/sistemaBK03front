@@ -6,7 +6,8 @@ import store from './store'
 import axios from 'axios'
 
 Vue.config.productionTip = false
-axios.defaults.baseURL='http://localhost:20000/api/'; //RUTA DE ACCESO AL BACKEND
+
+// axios.defaults.baseURL='http://localhost:20000/api/'; //RUTA DE ACCESO AL BACKEND
 
 /*--------------------REGISTER BOOTSTRAP---------------------------------*/
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
@@ -19,6 +20,10 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 /*-----------------------------------------------------------------------*/
 
+
+
+axios.defaults.baseURL='https://bk03sist.onrender.com/api/'; //RUTA DE ACCESO AL BACKD
+// axios.defaults.baseURL='http://localhost:20000/api/'; //RUTA DE ACCESO AL BACKEND
 
 new Vue({
   router,

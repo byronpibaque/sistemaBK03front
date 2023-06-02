@@ -41,7 +41,7 @@
           ></v-autocomplete>
          </v-flex> 
          <v-flex xs12 sm4 md4 lg4 xl4>
-              <v-text-field v-model="codigoBarr" label="Codigo Barras"></v-text-field>
+              <v-text-field v-model.trim="codigoBarr" label="Codigo Barras"></v-text-field>
           </v-flex>
            <v-flex xs12 sm12 md12 lg12 x12>
              
@@ -138,7 +138,7 @@
                 <v-layout wrap>
                   <v-flex xs12 sm12 md12 lg12 xl12>
                     <v-text-field
-                      v-model="texto"
+                      v-model.trim="texto"
                       @keyup.enter="listarArticulosnombres()"
                       class="text-xs-center"
                       append-icon="search"

@@ -72,7 +72,8 @@
                 <v-list-tile-title>Promociones</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile class="blue--text" :to="{name: 'descuentos'}" >
+            <v-list-tile v-if="esAdministrador || esJefe || esSupervisor"
+              class="blue--text" :to="{name: 'descuentos'}" >
               <v-list-tile-action>
                 <v-icon>local_offer</v-icon>
               </v-list-tile-action>
@@ -80,7 +81,8 @@
                 <v-list-tile-title>Descuentos</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-               <v-list-tile class="green--text" :to="{name: 'actualizarinf'}" >
+            <v-list-tile v-if="esAdministrador || esJefe || esSupervisor"
+              class="green--text" :to="{name: 'actualizarinf'}" >
               <v-list-tile-action>
                 <v-icon>local_offer</v-icon>
               </v-list-tile-action>
@@ -341,6 +343,14 @@
                 <v-list-tile-title>Seguimiento a productos</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
+             <v-list-tile   class="blue--text" :to="{name: 'seguimientoByFechas'}">
+              <v-list-tile-action>
+                <v-icon>visibility</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Seguimiento Por Rango de Fecha</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
              <v-list-tile   class="orange--text" :to="{name: 'consultaingresos'}">
               <v-list-tile-action>
                 <v-icon>shop_two</v-icon>
@@ -469,9 +479,6 @@ export default {
       login:"",
       user:"",
       farma:"",
-
-
-
     };
 
   },
@@ -523,15 +530,13 @@ export default {
       let configuracion = { headers: header };
       if (codigoFarmacia!=undefined){
         axios
-            .get("farmacia/query?_id="+codigoFarmacia, configuracion)
-            .then(function(response) {
-              me.farma=response.data.descripcion
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
-
-
+          .get("farmacia/query?_id="+codigoFarmacia, configuracion)
+          .then(function(response) {
+            me.farma=response.data.descripcion
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }else{
         me.farma="ADMINISTRADOR"
       }

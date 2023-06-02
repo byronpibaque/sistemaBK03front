@@ -155,7 +155,12 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" flat @click="close">Cancelar</v-btn>
-              <v-btn color="blue darken-1" flat @click="guardar">Guardar</v-btn>
+              <v-btn 
+                color="blue darken-1" flat 
+                :disabled="loading"
+                @click="guardar">
+                {{ loading ? 'Guardando...' : 'Guardar' }}
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -345,6 +350,7 @@ import Swal from "sweetalert2";
 export default {
   data() {
     return {
+      loading: false,
       desgloceD:0,
       codigoFar:'',
       finicio: "",
@@ -925,10 +931,10 @@ export default {
      
       me.codigoUsuario = me.$store.state.usuario.codigoUsuario;
       me.codigoFarmacia = me.$store.state.usuario.codigoFarmacia;
-       
 
-         axios
-        .post("arqueo/add", {
+      me.loading = true;
+
+         axios.post("arqueo/add", {
           totalCaja: totalCaja,
           totalBK03: totalBK,
           codigoUsuario: me.codigoUsuario,
@@ -937,17 +943,17 @@ export default {
           positivos:positivos,
           negativos:negativos,
           desgloce:me.desgloce
-        })
-        .then(function (response) {
+        }).then(function (response) {
           if(response.status==200){
             Swal.fire("Notificación","Arqueo guardado!","success")
           }
+          me.loading = false;
           me.limpiar();
           me.close();
           me.listar();
-          
-        })
-        .catch(function (error) {
+        
+        }).catch(function (error) {
+          me.loading = false;
           console.log(error);
         });
    

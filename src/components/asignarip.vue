@@ -24,6 +24,7 @@
             ASIGNAR
             <v-icon dark>save</v-icon>
         </v-btn>
+
         </v-flex>
         </v-layout>
       </v-container>
@@ -102,7 +103,13 @@ export default {
             console.log(error);
           });
     },
-   
+    testCorreo(){
+      axios.post("http://localhost:25000/api/ventas/enviarCorreo").then(function(response) {
+        console.log(response);
+      }).catch(function(error) {
+        console.log(error);
+      });
+    }
   },
     
 };

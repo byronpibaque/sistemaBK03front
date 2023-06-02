@@ -237,7 +237,9 @@
             </template>
           </td>
           <td>{{ props.item.codigoFarmacia.descripcion }}</td>
-          <td>{{ props.item.codigoUsuario.nombres }}</td>
+          <td>
+            {{ props.item.codigoUsuario == null ? 'No Hay Usuario' : props.item.codigoUsuario.nombres }}
+          </td>
           <td>{{ props.item.codgioPersona.nombres }}</td>
           <td>{{ props.item.descripcion }}</td>
           <td>{{ props.item.codigoTipoComprobante.descripcion }}</td>
@@ -1114,13 +1116,13 @@ export default {
           }else{
             Swal.fire("Ops!","Hubo problemas al intentar guardar el ingreso","err")
           }
-          this.loading = false;
+          me.loading = false;
           me.limpiar();
           me.close();
           me.listar();
         })
         .catch(function(error) {
-          this.loading = false;
+          me.loading = false;
           console.log(error);
         });
     },

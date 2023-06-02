@@ -824,7 +824,6 @@ import Swal from "sweetalert2";
                                              me.valida=1
                                            me.errorArticulo.push("No hay historial de actualizaciones para el articulo.") 
                                         }
-                                            
                                         }
                                     } else if(response.status==204){
                                          me.errorArticulo = response.data;
@@ -832,8 +831,6 @@ import Swal from "sweetalert2";
                                          me.valida=1
                                              me.errorArticulo = "Ocurrio un error";
                                     }
-                                   
-                                    
                                 })
                                 .catch(function (error) {
                                      me.valida=1
