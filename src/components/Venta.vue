@@ -1278,13 +1278,13 @@
                     <div v-if="props.item.iva!=0">
                       <div v-if="props.item.cantidad==0">
                         {{ 
-                          ((props.item.fracciones * props.item.precioUni))*0.12
+                          ((props.item.fracciones * props.item.precioUni))*parseFloat(doubleImpuesto)
                         }}
                       </div>
                       <div v-else>
                         {{
-                        ((props.item.cantidad * props.item.precioVenta)*0.12)+
-                         ((props.item.fracciones * props.item.precioUni)*0.12)
+                        ((props.item.cantidad * props.item.precioVenta)*parseFloat(doubleImpuesto))+
+                         ((props.item.fracciones * props.item.precioUni)*parseFloat(doubleImpuesto))
                         
                         }}
                       </div>
@@ -1300,8 +1300,8 @@
                     <div v-else>
                     <div v-if="props.item.iva!=0">
                       {{ 
-                        ((props.item.cantidad * props.item.precioVenta)-(props.item.cantidad * props.item.precioVenta)*0.12)
-                        +((props.item.fracciones * props.item.precioUni)-(props.item.fracciones * props.item.precioUni)*0.12)
+                        ((props.item.cantidad * props.item.precioVenta)-(props.item.cantidad * props.item.precioVenta)*parseFloat(doubleImpuesto))
+                        +((props.item.fracciones * props.item.precioUni)-(props.item.fracciones * props.item.precioUni)*parseFloat(doubleImpuesto))
                         
                         }}
                          
@@ -1590,13 +1590,13 @@
                                               <div v-if="props.item.iva!=0">
                                                 <div v-if="props.item.cantidad==0">
                                                   {{ 
-                                                    ((props.item.fracciones * props.item.precioUni))*0.12
+                                                    ((props.item.fracciones * props.item.precioUni))*parseFloat(doubleImpuesto)
                                                   }}
                                                 </div>
                                                 <div v-else>
                                                   {{
-                                                  ((props.item.cantidad * props.item.precioVenta)*0.12)+
-                                                  ((props.item.fracciones * props.item.precioUni)*0.12)
+                                                  ((props.item.cantidad * props.item.precioVenta)*parseFloat(doubleImpuesto))+
+                                                  ((props.item.fracciones * props.item.precioUni)*parseFloat(doubleImpuesto))
                                                   
                                                   }}
                                                 </div>
@@ -1612,8 +1612,8 @@
                                               <div v-else>
                                               <div v-if="props.item.iva!=0">
                                                 {{ 
-                                                  ((props.item.cantidad * props.item.precioVenta)-(props.item.cantidad * props.item.precioVenta)*0.12)
-                                                  +((props.item.fracciones * props.item.precioUni)-(props.item.fracciones * props.item.precioUni)*0.12)
+                                                  ((props.item.cantidad * props.item.precioVenta)-(props.item.cantidad * props.item.precioVenta)*parseFloat(doubleImpuesto))
+                                                  +((props.item.fracciones * props.item.precioUni)-(props.item.fracciones * props.item.precioUni)*parseFloat(doubleImpuesto))
                                                   
                                                   }}
                                                   
@@ -1879,7 +1879,6 @@ export default {
       row: null,
       agregarclienteModal: 0,
       nombres: "",
-      tipodocumento: "",
       numDocumento: "",
       direccion: "",
       telefono: "",
@@ -1905,7 +1904,8 @@ export default {
       topeMinimo:0,
       totalCredito:0,
       nombrePersona:"",
-      codigoInventarioObtenido:""
+      codigoInventarioObtenido:"",
+      doubleImpuesto:0.15
     };
   },
   computed: {
@@ -1930,7 +1930,7 @@ export default {
           if(this.detalles[i].iva!=0){
             resultado =
             resultado +
-           ( this.detalles[i].fracciones * this.detalles[i].precioUni)-(this.detalles[i].fracciones * this.detalles[i].precioUni*0.12)
+           ( this.detalles[i].fracciones * this.detalles[i].precioUni)-(this.detalles[i].fracciones * this.detalles[i].precioUni*parseFloat(this.doubleImpuesto))
           }else{
             resultado =
             resultado +
@@ -1941,8 +1941,8 @@ export default {
               if(this.detalles[i].iva!=0){
                  resultado =
                 resultado +
-                  ((this.detalles[i].cantidad * this.detalles[i].precioVenta)-(this.detalles[i].cantidad * this.detalles[i].precioVenta)*0.12)
-                   + ((this.detalles[i].fracciones * this.detalles[i].precioUni)-(this.detalles[i].fracciones * this.detalles[i].precioUni)*0.12)
+                  ((this.detalles[i].cantidad * this.detalles[i].precioVenta)-(this.detalles[i].cantidad * this.detalles[i].precioVenta)*parseFloat(this.doubleImpuesto))
+                   + ((this.detalles[i].fracciones * this.detalles[i].precioUni)-(this.detalles[i].fracciones * this.detalles[i].precioUni)*parseFloat(this.doubleImpuesto))
 
               }else{
                  resultado =
@@ -1986,11 +1986,11 @@ export default {
           if (this.detalles[i].cantidad == 0) {
             resultado =
               resultado +
-              (this.detalles[i].fracciones * this.detalles[i].precioUni *0.12)
+              (this.detalles[i].fracciones * this.detalles[i].precioUni *parseFloat(this.doubleImpuesto))
           } else {
             resultado =
               resultado +
-              ((this.detalles[i].cantidad * this.detalles[i].precioVenta)*0.12)+((this.detalles[i].fracciones * this.detalles[i].precioUni) *0.12)
+              ((this.detalles[i].cantidad * this.detalles[i].precioVenta)*parseFloat(this.doubleImpuesto))+((this.detalles[i].fracciones * this.detalles[i].precioUni) *parseFloat(this.doubleImpuesto))
           }
         }
       }
@@ -3425,10 +3425,10 @@ export default {
           pu = this.detalles[index].precioUni;
           val = parseFloat(cant)*parseFloat(pu)
           if(this.detalles[index].iva!=0){
-            piv = (pu-(pu*0.12)).toFixed(2)
+            piv = (pu-(pu*parseFloat(this.doubleImpuesto))).toFixed(2)
             let va = cant*pu
             let dec = (va*this.detalles[index].descuento / 100).toFixed(2)
-            let iv=va*0.12
+            let iv=va*parseFloat(this.doubleImpuesto)
             totalsinimpuesto = (va-dec-iv).toFixed(2)
             descto = dec
             baseImponible1=va-dec
@@ -3455,10 +3455,10 @@ export default {
           val=resultado
           
           if(this.detalles[index].iva!=0){
-               piv = (pu-(pu*0.12)).toFixed(2)
+               piv = (pu-(pu*parseFloat(this.doubleImpuesto))).toFixed(2)
             let va = resultado
             let dec = (parseFloat(resultado)*this.detalles[index].descuento/100).toFixed(2)
-            let iv=va*0.12
+            let iv=va*parseFloat(this.doubleImpuesto)
             totalsinimpuesto = (va-dec-iv).toFixed(2)
             descto = dec
             baseImponible1=va-dec
@@ -3480,10 +3480,10 @@ export default {
                val = parseFloat(cant)*parseFloat(pu)
 
             if(this.detalles[index].iva!=0){
-                 piv = (pu-(pu*0.12)).toFixed(2)
+                 piv = (pu-(pu*parseFloat(this.doubleImpuesto))).toFixed(2)
             let va = cant*pu
             let dec = (va*this.detalles[index].descuento / 100).toFixed(2)
-            let iv=va*0.12
+            let iv=va*parseFloat(this.doubleImpuesto)
             totalsinimpuesto = (va-dec-iv).toFixed(2)
             descto = dec
             baseImponible1=va-dec
@@ -3499,7 +3499,7 @@ export default {
         //verificar si graba iva o no
         if (this.detalles[index].iva != 0) {
           codigoPorcent = 2;
-          calculoporcentual = (val * 0.12).toFixed(2);
+          calculoporcentual = (val * parseFloat(this.doubleImpuesto)).toFixed(2);
           tarifa = 12;
         } else {
           codigoPorcent = 0;
@@ -4346,7 +4346,7 @@ export default {
       this.fpago="Efectivo"
       this.row=null
       this.numComprobante = "";
-      this.impuesto = 0.12;
+      this.impuesto = parseFloat(this.doubleImpuesto);
       this.codigoBarras = "";
       this.total = 0;
       this.totalParcial = 0;
