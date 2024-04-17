@@ -18,9 +18,7 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 /*-----------------------------------------------------------------------*/
 
-
-//axios.defaults.baseURL = 'https://sistemabk03-service-pr-26.onrender.com/api/'; //RUTA DE ACCESO AL BACK-TEST
-  axios.defaults.baseURL='https://sistemabk03-service.onrender.com/api/'; //RUTA DE ACCESO AL BACK
+axios.defaults.baseURL='https://sistemabk03-service.onrender.com/api/'; //RUTA DE ACCESO AL BACK
 //axios.defaults.baseURL='http://localhost:20000/api/'; //RUTA DE ACCESO AL BACKEND
 
 new Vue({

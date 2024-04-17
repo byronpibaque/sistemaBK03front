@@ -142,11 +142,11 @@
           <td>{{ props.item.ciudad }}</td>
            <td>{{ props.item.parroquia }}</td>
           <td>{{ props.item.ubicacion }}</td>
-          <td>{{ props.item.codigoLider.nombres }}</td>
-          <td>{{ props.item.codigoUsuario.nombres }}</td>
-          <td>{{ props.item.codigoSupervisor.nombres }}</td>
-          <td v-if="props.item.codigoPropietario">{{ props.item.codigoPropietario.nombres }}</td>
-           <td>{{ props.item.horarioAPT }}</td>
+          <td>{{ props.item.codigoLider ? props.item.codigoLider.nombres : 'nodata' }}</td>
+          <td>{{ props.item.codigoUsuario ? props.item.codigoUsuario.nombres : 'nodata' }}</td>
+          <td>{{ props.item.codigoSupervisor ? props.item.codigoSupervisor.nombres : 'nodata' }}</td>
+          <td v-if="props.item.codigoPropietario">{{ props.item.codigoPropietario.nombres ? props.item.codigoPropietario.nombres : 'nodata' }}</td>
+          <td>{{ props.item.horarioAPT }}</td>
            <td>{{ props.item.horarioCPT }}</td>
            <td>{{ props.item.horarioAST }}</td>
            <td>{{ props.item.horarioCST }}</td>
@@ -536,32 +536,32 @@ export default {
       }
     },
     editItem(item) {
-     
-      this.listarProvincias(item.region)
-      this.listarCiudades(item.provincia)
-      this.codigoCiudad=item.ciudad;
-      this.codigoProvincia=item.provincia;
-      this._id=item._id;
-      this.farma=item.descripcion;
-      this.num_establecimiento=item.num_establecimiento;
-      this.ubicacion=item.ubicacion;
-      this.correoFar=item.correo;
-      this.farmacias=item.codigoFarmacias._id
-      this.lider=item.codigoLider._id;
-      this.usuario = item.codigoUsuario._id;
-      this.supervisor = item.codigoSupervisor._id;
-      this.codigoPropietario = item.codigoPropietario._id;
-      this.codigoRegion=item.region;
-      this.codigoProvincia=item.provincia
-      this.codigoCiudad=item.ciudad
-      this.parroquia=item.parroquia
+      this.listarProvincias(item.region);
+      this.listarCiudades(item.provincia);
+      this.codigoCiudad = item.ciudad || 'nodata';
+      this.codigoProvincia = item.provincia || 'nodata';
+      this._id = item._id || 'nodata';
+      this.farma = item.descripcion || 'nodata';
+      this.num_establecimiento = item.num_establecimiento || 'nodata';
+      this.ubicacion = item.ubicacion || 'nodata';
+      this.correoFar = item.correo || 'nodata';
+      this.farmacias = item.codigoFarmacias ? item.codigoFarmacias._id : 'nodata';
+      this.lider = item.codigoLider ? item.codigoLider._id : 'nodata';
+      this.usuario = item.codigoUsuario ? item.codigoUsuario._id : 'nodata';
+      this.supervisor = item.codigoSupervisor ? item.codigoSupervisor._id : 'nodata';
+      this.codigoPropietario = item.codigoPropietario ? item.codigoPropietario._id : 'nodata';
+      this.codigoRegion = item.region || 'nodata';
+      this.codigoProvincia = item.provincia || 'nodata';
+      this.codigoCiudad = item.ciudad || 'nodata';
+      this.parroquia = item.parroquia || 'nodata';
       this.dialog = true;
       this.editedIndex = 1;
-      this.HAPT=item.horarioAPT
-      this.HCPT=item.horarioCPT
-      this.HAST=item.horarioAST
-      this.HCST=item.horarioCST
-    },
+      this.HAPT = item.horarioAPT || 'nodata';
+      this.HCPT = item.horarioCPT || 'nodata';
+      this.HAST = item.horarioAST || 'nodata';
+      this.HCST = item.horarioCST || 'nodata';
+    }
+    ,
     activarDesactivarMostrar(accion, item) {
       this.adModal = 1;
       this.adNombre = item.descripcion;

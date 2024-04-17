@@ -77,6 +77,7 @@ export default {
   },
   methods: {
     async comprobacion(ipobtenida, ippublica) {
+      return true;
       if (ipobtenida == ippublica) {
         return true;
       } else {

@@ -289,7 +289,7 @@
           </td>
           <td>{{ props.item.codigoInventarioE.descripcion }}</td>
           <td>{{ props.item.codigoInventarioR.descripcion }}</td>
-          <td>{{ props.item.codigoUsuario.nombres }}</td>
+          <td>{{  props.item.codigoUsuario ? props.item.codigoUsuario.nombres : 'nodata' }}</td>
           <td>{{ props.item.descripcion }}</td>
           <td>{{ props.item.numComprobante }}</td>
           <td>{{ formatearFecha(props.item.createdAt) }}</td>
@@ -516,7 +516,7 @@ export default {
           sortable: false,
         },
         { text: "Fecha", value: "createdAt", sortable: true },
-        { text: "Estado", value: "estado", sortable: false },
+        { text: "Estado", value: "estado", sortable: true },
       ],
       _id: "",
       codigoInventario: "",
@@ -593,7 +593,7 @@ export default {
         { text: "PVP", value: "pvp", sortable: false  },
         { text: "Descuento", value: "descuento", sortable: false  },
         { text: "Farmacia", value: "codigoInventario", sortable: false },
-        { text: "Estado", value: "estado", sortable: false },
+        { text: "Estado", value: "estado", sortable: true },
       ],
       verDetalle: 0,
       valida: 0,

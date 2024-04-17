@@ -103,8 +103,9 @@
               <v-icon small @click="activarDesactivarMostrar(1,props.item)">check</v-icon>
             </template>
           </td>
-         
-          <td>{{ props.item.codigoUsuario.nombres }}</td>
+
+          <td v-if="props.item.codigoUsuario">{{ props.item.codigoUsuario.nombres }}</td>
+          <td v-else>No data.</td>
            <td>{{ props.item.email }}</td>
             <td v-if="props.item.codigoFarmacia">{{props.item.codigoFarmacia.descripcion}}</td>
             <td v-else>INDEFINIDA</td>
